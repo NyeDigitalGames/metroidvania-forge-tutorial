@@ -1,0 +1,51 @@
+[gd_scene load_steps=8 format=3 uid="uid://bfxj2vgjqoaky"]
+
+[ext_resource type="Script" uid="uid://cnnudoa5qigw5" path="res://Player/Scripts/player.gd" id="1_k53q1"]
+[ext_resource type="Script" uid="uid://bwbxftjp4ffaa" path="res://Player/States/idle.gd" id="2_fhl08"]
+[ext_resource type="Script" uid="uid://c0bjcogwp3dwo" path="res://Player/States/run.gd" id="3_vtle1"]
+[ext_resource type="Script" uid="uid://bw20xyru1isk" path="res://Player/States/jump.gd" id="4_od3ui"]
+[ext_resource type="Script" uid="uid://uqoq16073axw" path="res://Player/States/fall.gd" id="5_00tjw"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_x3vf3"]
+size = Vector2(18, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_apopc"]
+size = Vector2(16, 48)
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_k53q1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -24)
+texture = SubResource("PlaceholderTexture2D_x3vf3")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -24)
+shape = SubResource("RectangleShape2D_apopc")
+
+[node name="Label" type="Label" parent="."]
+offset_left = -24.0
+offset_top = -72.0
+offset_right = 24.0
+offset_bottom = -55.0
+theme_override_font_sizes/font_size = 12
+text = "STATE"
+horizontal_alignment = 1
+
+[node name="States" type="Node" parent="."]
+
+[node name="Idle" type="Node" parent="States"]
+unique_name_in_owner = true
+script = ExtResource("2_fhl08")
+
+[node name="Run" type="Node" parent="States"]
+unique_name_in_owner = true
+script = ExtResource("3_vtle1")
+
+[node name="Jump" type="Node" parent="States"]
+unique_name_in_owner = true
+script = ExtResource("4_od3ui")
+
+[node name="Fall" type="Node" parent="States"]
+unique_name_in_owner = true
+script = ExtResource("5_00tjw")
