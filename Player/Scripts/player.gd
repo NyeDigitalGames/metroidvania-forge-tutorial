@@ -1,6 +1,7 @@
 class_name Player extends CharacterBody2D
 
 const DEBUG_JUMP_INDICATOR = preload("uid://bknblw0b6rw3n")
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
 @export var move_speed : float = 150
 
@@ -12,6 +13,8 @@ var previous_state : PlayerState :
 
 var direction : Vector2 = Vector2.ZERO
 var gravity_mulitplier : float = 1.0
+var is_crouching : bool = false
+
 
 func _ready() -> void:
 	initialize_states()
@@ -27,6 +30,10 @@ func _process( _delta: float ) -> void:
 	pass
 
 func _physics_process( _delta: float ) -> void:
+	if direction.x < 0:
+		$Sprite2D.flip_h=true
+	else:
+		$Sprite2D.flip_h=false
 	velocity.y += get_gravity().y * _delta * gravity_mulitplier
 	move_and_slide()
 	change_state( current_state.physics_process( _delta ) )

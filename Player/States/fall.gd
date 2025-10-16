@@ -9,6 +9,8 @@ var buffer_timer : float = 0.0
 
 func enter() -> void:
 	#TODO Play animation
+	await get_tree().physics_frame
+	player.animation_player.play("fall")
 	player.gravity_mulitplier = fall_gravity_mulitplier
 	if player.previous_state == run:
 		coyote_timer = coyote_time
@@ -33,6 +35,8 @@ func physics_process( _delta: float ) -> PlayerState:
 		player.add_debug_indicator()
 		if buffer_timer > 0:
 			return jump
+		if player.is_crouching:
+			return crouch
 		return idle
 	return next_state
 
@@ -41,4 +45,6 @@ func handle_input( _event : InputEvent ) -> PlayerState:
 		buffer_timer=jump_buffer_time
 		if coyote_timer > 0:
 			return jump
+	elif _event.is_action_released("down"):
+		player.is_crouching = false
 	return next_state

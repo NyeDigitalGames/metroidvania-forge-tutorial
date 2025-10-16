@@ -4,6 +4,7 @@ class_name PlayerStateJump extends PlayerState
 
 func enter() -> void:
 	#TODO Play animation
+	player.animation_player.play("jump")
 	player.add_debug_indicator( Color.LIME_GREEN )
 	player.velocity.y = jump_force
 	pass
