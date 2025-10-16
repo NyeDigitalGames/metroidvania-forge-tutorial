@@ -3,6 +3,7 @@ class_name Player extends CharacterBody2D
 const DEBUG_JUMP_INDICATOR = preload("uid://bknblw0b6rw3n")
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 
+@export var debug_enabled : bool = false
 @export var move_speed : float = 150
 
 var states : Array[ PlayerState ]
@@ -17,6 +18,8 @@ var is_crouching : bool = false
 
 
 func _ready() -> void:
+	if debug_enabled:
+		$Label.visible=true
 	initialize_states()
 	pass
 
@@ -56,7 +59,8 @@ func initialize_states() -> void:
 	
 	change_state( current_state )
 	current_state.enter()
-	$Label.text = current_state.name
+	if debug_enabled:
+		$Label.text = current_state.name
 	pass
 
 func change_state( new_state : PlayerState ) -> void:
@@ -71,7 +75,8 @@ func change_state( new_state : PlayerState ) -> void:
 	states.push_front( new_state )
 	current_state.enter()
 	states.resize( 3 )
-	$Label.text = current_state.name
+	if debug_enabled:
+		$Label.text = current_state.name
 	pass
 
 func update_direction() -> void:
@@ -81,6 +86,8 @@ func update_direction() -> void:
 	pass
 
 func add_debug_indicator( color : Color = Color.RED ) -> void:
+	if !debug_enabled:
+		return
 	var d : Node2D = DEBUG_JUMP_INDICATOR.instantiate()
 	get_tree().root.add_child( d )
 	d.global_position = global_position
