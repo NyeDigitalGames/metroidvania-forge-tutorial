@@ -5,6 +5,7 @@ const DEBUG_JUMP_INDICATOR = preload("uid://bknblw0b6rw3n")
 
 @export var debug_enabled : bool = false
 @export var move_speed : float = 150
+@export var max_fall_speed : float = 600
 
 var states : Array[ PlayerState ]
 var current_state : PlayerState : 
@@ -14,8 +15,6 @@ var previous_state : PlayerState :
 
 var direction : Vector2 = Vector2.ZERO
 var gravity_mulitplier : float = 1.0
-var is_crouching : bool = false
-
 
 func _ready() -> void:
 	if debug_enabled:
@@ -33,11 +32,8 @@ func _process( _delta: float ) -> void:
 	pass
 
 func _physics_process( _delta: float ) -> void:
-	if direction.x < 0:
-		$Sprite2D.flip_h=true
-	else:
-		$Sprite2D.flip_h=false
 	velocity.y += get_gravity().y * _delta * gravity_mulitplier
+	velocity.y = clampf( velocity.y, -1000.0, max_fall_speed )
 	move_and_slide()
 	change_state( current_state.physics_process( _delta ) )
 	pass
@@ -80,9 +76,17 @@ func change_state( new_state : PlayerState ) -> void:
 	pass
 
 func update_direction() -> void:
+	var prev_direciton : Vector2 = direction
+	
 	var x_axis = Input.get_axis("left", "right")
 	var y_axis = Input.get_axis("up", "down")
 	direction = Vector2(x_axis, y_axis)
+	
+	if prev_direciton.x != direction.x:
+		if direction.x < 0:
+			$Sprite2D.flip_h=true
+		elif direction.x > 0:
+			$Sprite2D.flip_h=false
 	pass
 
 func add_debug_indicator( color : Color = Color.RED ) -> void:
