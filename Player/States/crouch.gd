@@ -2,12 +2,24 @@ class_name PlayerStateCrouch extends PlayerState
 @onready var one_way_platform_shapecast: ShapeCast2D = $"../../OneWayPlatformShapecast"
 
 
+@export var deceleration_rate : float = 10.0
+
+@onready var collision_stand: CollisionShape2D = $"../../CollisionStand"
+@onready var collision_crouch: CollisionShape2D = $"../../CollisionCrouch"
+
+func init() -> void:
+	collision_crouch.disabled=true
+
 func enter() -> void:
 	#TODO Play animation
 	player.animation_player.play("crouch")
+	collision_crouch.disabled=false
+	collision_stand.disabled=true
 	pass
 
 func exit() -> void:
+	collision_stand.disabled=false
+	collision_crouch.disabled=true
 	pass
 
 func handle_input( _event : InputEvent ) -> PlayerState:
@@ -23,7 +35,7 @@ func handle_input( _event : InputEvent ) -> PlayerState:
 	#return next_state
 
 func physics_process( _delta: float ) -> PlayerState:
-	player.velocity.x = 0
+	player.velocity.x -= player.velocity.x * deceleration_rate * _delta
 	if !player.is_on_floor():
 		return fall
 	elif player.direction.y <= 0.5:
