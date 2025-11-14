@@ -5,7 +5,7 @@ class_name PlayerStateCrouch extends PlayerState
 @export var deceleration_rate : float = 10.0
 
 @onready var collision_stand: CollisionShape2D = $"../../CollisionStand"
-@onready var collision_crouch: CollisionShape2D = $"../../CollisionCrouch"
+@onready var collision_crouch: CollisionShape2D = $"../../CrouchCollision"
 
 func init() -> void:
 	collision_crouch.disabled=true
@@ -13,6 +13,7 @@ func init() -> void:
 func enter() -> void:
 	#TODO Play animation
 	player.animation_player.play("crouch")
+	player.animation_player.seek(0.0)
 	collision_crouch.disabled=false
 	collision_stand.disabled=true
 	pass

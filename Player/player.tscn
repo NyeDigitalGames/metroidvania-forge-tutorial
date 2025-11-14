@@ -157,7 +157,7 @@ texture = ExtResource("2_vtle1")
 hframes = 16
 vframes = 4
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionStand" type="CollisionShape2D" parent="."]
 visible = false
 position = Vector2(0, -23)
 shape = SubResource("CapsuleShape2D_vtle1")
@@ -200,7 +200,7 @@ libraries = {
 &"": SubResource("AnimationLibrary_apopc")
 }
 
-[node name="CrouchCollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CrouchCollision" type="CollisionShape2D" parent="."]
 position = Vector2(0, -15)
 shape = SubResource("CapsuleShape2D_od3ui")
 
