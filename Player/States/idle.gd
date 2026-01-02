@@ -1,11 +1,10 @@
 class_name PlayerStateIdle extends PlayerState
 
 func enter() -> void:
-	#TODO Play animation
 	if player.previous_state == crouch:
 		player.animation_player.play("stand")
-		await player.animation_player.animation_finished
-	player.animation_player.play("idle")
+	else:
+		player.animation_player.play("idle")
 	pass
 
 func exit() -> void:

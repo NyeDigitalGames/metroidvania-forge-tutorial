@@ -1,28 +1,57 @@
 class_name Player extends CharacterBody2D
 
 const DEBUG_JUMP_INDICATOR = preload("uid://bknblw0b6rw3n")
-@onready var animation_player: AnimationPlayer = $AnimationPlayer
 
+#region /// on ready variables
+@onready var sprite: Sprite2D = $Sprite2D
+@onready var collision_stand: CollisionShape2D = $CollisionStand
+@onready var collision_crouch: CollisionShape2D = $CollisionCrouch
+@onready var one_way_platform_shapecast: ShapeCast2D = $OneWayPlatformShapecast
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+#endregion
+
+#region /// export variables
 @export var debug_enabled : bool = false
 @export var move_speed : float = 150
 @export var max_fall_speed : float = 600
+#endregion
 
+#region /// state machine variables
 var states : Array[ PlayerState ]
 var current_state : PlayerState : 
 	get : return states.front()
 var previous_state : PlayerState : 
 	get : return states[ 1 ]
+#endregion
 
+#region /// player stats
+var hp : float = 20
+var max_hp : float = 20
+var dash : bool = false
+var double_jump : bool = false
+var ground_slam : bool = false
+var morph_ball : bool = false
+#endregion
+
+#region /// standard variables
 var direction : Vector2 = Vector2.ZERO
+var gravity : float = 980 #get_gravity().y
 var gravity_mulitplier : float = 1.0
+#endregion
 
 func _ready() -> void:
+	if get_tree().get_first_node_in_group("Player") != self:
+		self.queue_free()
 	if debug_enabled:
 		$Label.visible=true
 	initialize_states()
+	self.call_deferred( "reparent", get_tree().root )
+	#Messages.player_healed.connect( _on_player_healed )
 	pass
 
 func _unhandled_input( event: InputEvent ) -> void:
+	#if event.is_action_pressed( "action" ):
+		#Messages.player_interacted.emit( self )
 	change_state( current_state.handle_input( event ) )
 	pass
 
@@ -32,7 +61,7 @@ func _process( _delta: float ) -> void:
 	pass
 
 func _physics_process( _delta: float ) -> void:
-	velocity.y += get_gravity().y * _delta * gravity_mulitplier
+	velocity.y += gravity * _delta * gravity_mulitplier
 	velocity.y = clampf( velocity.y, -1000.0, max_fall_speed )
 	move_and_slide()
 	change_state( current_state.physics_process( _delta ) )
@@ -98,4 +127,8 @@ func add_debug_indicator( color : Color = Color.RED ) -> void:
 	d.modulate = color
 	await get_tree().create_timer( 3.0 ).timeout
 	d.queue_free()
+	pass
+
+func _on_player_healed( amount : float ) -> void:
+	hp += amount
 	pass

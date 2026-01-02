@@ -146,11 +146,10 @@ radius = 8.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_00tjw"]
 size = Vector2(16, 3)
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" groups=["Player"]]
 collision_mask = 3
 floor_snap_length = 2.0
 script = ExtResource("1_k53q1")
-debug_enabled = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -39)
@@ -201,7 +200,7 @@ libraries = {
 &"": SubResource("AnimationLibrary_apopc")
 }
 
-[node name="CrouchCollision" type="CollisionShape2D" parent="."]
+[node name="CollisionCrouch" type="CollisionShape2D" parent="."]
 position = Vector2(0, -15)
 shape = SubResource("CapsuleShape2D_od3ui")
 
