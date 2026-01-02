@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://3wa06hhw1c8o"
-path="res://.godot/imported/level_transition.svg-acfd24f1f6b6be340aced9c808a4359b.ctex"
+path="res://.godot/imported/level_transition.svg-10c1e86447559876e902773fdd695eff.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://level_transition.svg"
-dest_files=["res://.godot/imported/level_transition.svg-acfd24f1f6b6be340aced9c808a4359b.ctex"]
+source_file="res://General/Icons/level_transition.svg"
+dest_files=["res://.godot/imported/level_transition.svg-10c1e86447559876e902773fdd695eff.ctex"]
 
 [params]
 
